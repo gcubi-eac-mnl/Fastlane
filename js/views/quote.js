@@ -2,8 +2,8 @@
 
 const quoteV = () => {
   rows = 1;
-  return `<div class="hero"><h1>Get a quote in minutes.</h1><p>Enter your vehicle and up to five drivers. Try the sample licenses in the admin tab, for example N01-23-000001 (Juan Dela Cruz, 1990-05-14).</p></div>
-<div class="card"><h2>Vehicle</h2><div class="g"><div><label>Make</label><input id="vm"></div><div><label>Model</label><input id="vo"></div><div><label>Year</label><input id="vy" type="number"></div><div><label>Market value (₱)</label><input id="vv" type="text" inputmode="numeric"></div><div><label>Registered in</label><select id="vc"><option>Metro Manila</option><option>Outside Metro Manila</option></select></div><div><label>Vehicle type</label><select id="vt"><option>Private passenger</option><option>Commercial</option><option>Public utility</option></select></div><div><label>Unknown license numbers</label><select id="lm"><option value="auto">Auto-generate a background</option><option value="manual">Send to manual review</option></select></div><div><label>Coverage</label><select id="cv"><option>Comprehensive</option><option>Third-Party Liability</option></select></div></div>
+  return `<div class="hero"><h1>Get a quote in minutes.</h1><p>Enter your vehicle and up to five drivers. To try a sample driver, use license N01-23-000001 (Juan Dela Cruz, 1990-05-14).</p></div>
+<div class="card"><h2>Vehicle</h2><div class="g"><div><label>Make</label><input id="vm"></div><div><label>Model</label><input id="vo"></div><div><label>Year</label><input id="vy" type="number"></div><div><label>Market value (₱)</label><input id="vv" type="number"></div><div><label>Registered in</label><select id="vc"><option>Metro Manila</option><option>Outside Metro Manila</option></select></div><div><label>Vehicle type</label><select id="vt"><option>Private passenger</option><option>Commercial</option><option>Public utility</option></select></div><div><label>Unknown license numbers</label><select id="lm"><option value="auto">Auto-generate a background</option><option value="manual">Send to manual review</option></select></div><div><label>Coverage</label><select id="cv"><option>Comprehensive</option><option>Third-Party Liability</option></select></div></div>
 <h2 style="margin-top:1rem">Drivers</h2><div id="drvs">${drvRow(0)}</div><button class="btn line sm" onclick="addDrv()">Add driver</button><div id="qerr"></div><button class="btn gold" onclick="getQuote()">Get quote</button></div><div id="qres"></div>`;
 };
 
@@ -21,7 +21,7 @@ function getQuote() {
     make: $('#vm').value.trim(),
     model: $('#vo').value.trim(),
     year: +$('#vy').value,
-    value: +$('#vv').value.replace(/,/g, ''),
+    value: +$('#vv').value,
     city: $('#vc').value,
     cover: $('#cv').value,
     manual: $('#lm').value === 'manual',
@@ -91,17 +91,3 @@ function applyNow() {
   log('Started application ' + a.id);
   go('apps');
 }
-
-/* Add thousands separators to the market value as the user types */
-document.addEventListener('input', (e) => {
-  if (e.target.id !== 'vv') return;
-  const el = e.target;
-  const pos = el.selectionStart;
-  const before = el.value.length;
-
-  const digits = el.value.replace(/\D/g, '');
-  el.value = digits ? Number(digits).toLocaleString('en-US') : '';
-
-  const newPos = Math.max(0, pos + (el.value.length - before));
-  el.setSelectionRange(newPos, newPos);
-});
