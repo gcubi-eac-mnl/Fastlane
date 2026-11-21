@@ -15,6 +15,10 @@ const STAGES = [
 
 const IDLE_MS = 30 * 60 * 1000; /* NFR-011: auto logout after 30 minutes without activity */
 
+/* Password reset: FastLane cannot send real email, so the reset code is shown on screen as a simulated email.
+   Set to false once a real email service is connected, so the code is no longer shown to the person asking. */
+const DEMO_SHOW_RESET_CODE = true;
+
 const REASONS = [
   'Image unreadable',
   'Wrong document',

@@ -8,3 +8,8 @@ let me = null,
   toastT;
 
 let paySid = null;
+
+/* Login screen: which panel is showing, and the demo "email" for a password reset */
+let authView = 'home',
+  resetEmail = '',
+  demoMail = null;

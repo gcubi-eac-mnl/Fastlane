@@ -15,6 +15,7 @@ const VIEWS = {
   audit: auditV,
   lto: ltoV,
   cfg: cfgV,
+  account: accountV,
   staff: staffV,
 };
 

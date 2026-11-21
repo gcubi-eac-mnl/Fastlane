@@ -30,6 +30,7 @@ Web portal for Confidently Fast (motor vehicle insurance): quote, driver verific
 | `js/views/settings.js` | Admin: rates, loading rules, repair shops, rejection reasons, staff accounts | Admin features |
 | `js/views/policy.js` | Policy PDF download | Policy document wording |
 | `js/main.js` | Maps tab names to screens and starts the app | Register a new screen |
+| `img/logo.png` | Company logo (from the Company Conceptualization document) | Branding |
 | `css/styles.css` | All styling | Look and feel |
 
 Scripts are plain files loaded in the order listed in `index.html`. Later files use things defined in earlier ones.
@@ -59,6 +60,16 @@ Not protected (prototype limits):
 - Anyone who has the site's public key can still read and change records, including the stored password hashes and uploaded documents. Role-based access is enforced in the screens only, not in the database (see NFR-010 in the system proposal).
 - Real per-user security would need Supabase Auth and per-role database rules, and moving the LTO lookup and pricing to the server.
 - Use fictitious data only, and never reuse a real password.
+
+## Public site and accounts
+- **Landing page** (`homeV()` in `js/views/layout.js`): hero, benefits, coverage, how it works, FAQ and footer. Login and registration are separate screens opened from its buttons.
+- **Account** tab (every role): change your own password.
+- **Administrators cannot see passwords.** Passwords are stored only as salted hashes, as NFR-008 requires. An administrator can instead press **Reset password** (Staff accounts, or a customer profile) to create a temporary password that is shown once. The person must choose their own at next login.
+
+## Forgot password
+Log in screen, **Forgot password?**: enter the email, get a 6-digit code, choose a new password. The code is stored as a salted hash, expires after 10 minutes and allows 5 wrong tries.
+
+This prototype cannot send real email, so the code appears on screen as a **simulated email** (like the simulated email log in the system proposal). That means anyone who knows an account's email can reset its password. To use a real email service later, send the code from `requestReset()` in `js/views/password.js` and set `DEMO_SHOW_RESET_CODE` to `false` in `js/config.js`.
 
 ## Known limits
 Rates and loadings are illustrative. Renewals, amendments, cancellation, the blacklist check and the post-claim survey are not built (the "Should" items in Section 4 of the system proposal). Internet is needed for the fonts, the QR code and the PDF library.

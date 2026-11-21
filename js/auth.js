@@ -23,8 +23,9 @@ async function login(e, p) {
     save();
   }
   me = u;
+  authView = 'home';
   resetIdle();
-  tab = NAV[u.role][0][0];
+  tab = u.mustChange ? 'account' : NAV[u.role][0][0];
   log('Login');
   draw();
 }
@@ -44,6 +45,7 @@ async function register() {
 
 const logout = () => {
   clearTimeout(idleT);
+  authView = 'home';
   log('Logout');
   me = null;
   draw();

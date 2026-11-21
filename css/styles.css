@@ -54,13 +54,17 @@ header {
   border-bottom: 3px solid var(--gold);
 }
 .brand {
-  font: 800 1.25rem Archivo;
+  font:
+    800 1.25rem Archivo,
+    sans-serif;
   font-style: italic;
   margin-right: auto;
 }
 .brand small {
   display: block;
-  font: 400 0.7rem 'IBM Plex Sans';
+  font:
+    400 0.7rem 'IBM Plex Sans',
+    sans-serif;
   font-style: normal;
   color: var(--silver);
 }
@@ -251,7 +255,9 @@ th {
   font-weight: 600;
 }
 .tot {
-  font: 800 1.8rem Archivo;
+  font:
+    800 1.8rem Archivo,
+    sans-serif;
 }
 .toast {
   position: fixed;
@@ -314,5 +320,330 @@ th {
   from {
     opacity: 0;
     transform: translate(-50%, 8px);
+  }
+}
+
+/* ===== logo, public site and landing page ===== */
+.mark {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+header .brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+header.pub {
+  display: block;
+  background: #fff;
+  color: var(--ink);
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  border-bottom: 3px solid var(--gold);
+}
+.pub-in {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.55rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.pub-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font:
+    800 1.1rem Archivo,
+    sans-serif;
+  font-style: italic;
+  color: var(--navy);
+  text-align: left;
+  padding: 0;
+  margin-right: auto;
+}
+.pub-brand small {
+  display: block;
+  font:
+    400 0.7rem 'IBM Plex Sans',
+    sans-serif;
+  font-style: normal;
+  color: #5a6578;
+}
+.pub-nav {
+  display: flex;
+  gap: 0.25rem;
+}
+.pub-nav button {
+  background: none;
+  border: 0;
+  color: var(--ink);
+  padding: 0.45rem 0.75rem;
+  border-radius: var(--r);
+  cursor: pointer;
+  font: 500 0.9rem inherit;
+}
+.pub-nav button:hover {
+  background: var(--mist);
+}
+.pub-cta {
+  display: flex;
+  gap: 0.4rem;
+}
+.pub-cta .btn {
+  margin: 0;
+}
+.link {
+  background: none;
+  border: 0;
+  color: var(--navy);
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+.authwrap {
+  max-width: 460px;
+  margin: 1.5rem auto;
+}
+.in {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.hero2 {
+  background: var(--navy);
+  color: #fff;
+  padding: 3.5rem 1.25rem;
+  background-image: repeating-linear-gradient(
+    100deg,
+    transparent 0 22px,
+    rgba(201, 209, 220, 0.07) 22px 24px
+  );
+}
+.hero2 .in {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+.eyebrow {
+  color: var(--gold);
+  font:
+    600 0.8rem 'IBM Plex Sans',
+    sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0 0 0.75rem;
+}
+.hero2 h1 {
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  margin-bottom: 1rem;
+}
+.hero2 h1 span {
+  color: var(--gold);
+}
+.lead {
+  color: var(--silver);
+  font-size: 1.1rem;
+  max-width: 52ch;
+  margin: 0 0 1rem;
+}
+.btn.lg {
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+}
+.btn.ghost {
+  background: transparent;
+  color: #fff;
+  border: 1px solid var(--silver);
+}
+.chips {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 1.25rem 0 0;
+}
+.chips li {
+  border: 1px solid rgba(201, 209, 220, 0.4);
+  border-radius: 99px;
+  padding: 0.25rem 0.8rem;
+  font-size: 0.85rem;
+  color: var(--silver);
+}
+.qcard {
+  background: #fff;
+  color: var(--ink);
+  border-radius: 10px;
+  padding: 1.25rem;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+.qcard td:last-child,
+.qcard th:last-child {
+  text-align: right;
+  white-space: nowrap;
+}
+.sec {
+  padding: 3.5rem 1.25rem;
+}
+.sec.alt {
+  background: #fff;
+}
+.sec h2 {
+  font-size: 1.8rem;
+  text-align: center;
+}
+.sub {
+  text-align: center;
+  color: #5a6578;
+  max-width: 60ch;
+  margin: 0.25rem auto 2rem;
+}
+.cards {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+.fc {
+  background: #fff;
+  border: 1px solid var(--silver);
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+.sec.alt .fc {
+  background: var(--mist);
+}
+.fc ul {
+  padding-left: 1.1rem;
+  margin: 0.4rem 0 0;
+}
+.fc p {
+  margin: 0.25rem 0 0;
+}
+.ico {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--navy);
+  color: var(--gold);
+  display: grid;
+  place-items: center;
+  margin-bottom: 0.75rem;
+}
+.steps {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  padding: 0;
+  margin: 0;
+  counter-reset: s;
+}
+.steps li {
+  list-style: none;
+  counter-increment: s;
+  background: var(--mist);
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+.steps li::before {
+  content: counter(s);
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: #1a1205;
+  font:
+    700 1rem Archivo,
+    sans-serif;
+  margin-bottom: 0.6rem;
+}
+.steps p {
+  margin: 0.25rem 0 0;
+}
+details {
+  background: #fff;
+  border: 1px solid var(--silver);
+  border-radius: var(--r);
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+}
+details summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+details p {
+  margin: 0.5rem 0 0;
+}
+.sec.cta {
+  background: var(--navy);
+  color: #fff;
+}
+footer.site {
+  background: #0e1830;
+  color: var(--silver);
+  padding: 2rem 1.25rem;
+}
+footer.site .brand {
+  color: #fff;
+  font:
+    800 1.1rem Archivo,
+    sans-serif;
+  font-style: italic;
+}
+footer.site small {
+  display: block;
+  font:
+    400 0.75rem 'IBM Plex Sans',
+    sans-serif;
+  font-style: normal;
+  color: var(--silver);
+}
+footer.site p {
+  margin: 0.5rem 0 0;
+}
+.secret {
+  font:
+    700 1.6rem/1.2 ui-monospace,
+    Menlo,
+    Consolas,
+    monospace;
+  letter-spacing: 0.08em;
+  background: var(--mist);
+  border: 1px dashed var(--navy);
+  border-radius: var(--r);
+  padding: 0.8rem;
+  text-align: center;
+  margin: 0.75rem 0;
+  user-select: all;
+}
+@media (max-width: 820px) {
+  .hero2 .in {
+    grid-template-columns: 1fr;
+  }
+  .pub-nav {
+    display: none;
+  }
+}
+@media (max-width: 520px) {
+  .pub-brand {
+    font-size: 0.95rem;
+  }
+  .pub-brand small {
+    display: none;
+  }
+  .pub-cta .btn {
+    padding: 0.3rem 0.6rem;
+  }
+  .mark {
+    height: 30px;
   }
 }

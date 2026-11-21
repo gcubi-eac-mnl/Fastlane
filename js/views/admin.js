@@ -24,7 +24,7 @@ function profV() {
       owners
         .map(
           (o, i) =>
-            `<div class="card"><h3>${esc(o)}</h3><b>Applications</b><br>${
+            `<div class="card"><h3>${esc(o)} ${me.role === 'Administrator' ? `<button class="btn line sm" onclick="adminResetPassword('${esc(o)}')">Reset password</button>` : ''}</h3><b>Applications</b><br>${
               db.apps
                 .filter((a) => a.owner === o)
                 .map((a) => `${a.id} ${BADGE(a.status)} ${esc(a.quote.make)} ${esc(a.quote.model)}`)
