@@ -13,6 +13,9 @@ const STAGES = [
   'Paid / Closed',
 ];
 
+/* Shown at the bottom of the site, so you can tell which version is live. Change it with each update. */
+const APP_VERSION = '2026-11-22-d';
+
 const IDLE_MS = 30 * 60 * 1000; /* NFR-011: auto logout after 30 minutes without activity */
 
 /* Password reset: FastLane cannot send real email, so the reset code is shown on screen as a simulated email.

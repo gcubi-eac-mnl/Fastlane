@@ -105,13 +105,13 @@ function homeV() {
 const siteFooter = () => `<footer class="site"><div class="in">
 <div class="brand"><img class="mark" src="img/logo.png" alt=""><div>Confidently Fast<small>A GMR Corporation company</small></div></div>
 <p>910 Antonio Arnaiz Avenue, Makati City, Metro Manila</p>
-<p class="muted">FastLane is a school prototype (BSCOE 3-1). All data is fictitious, and LTO records and payments are simulated.</p></div></footer>`;
+<p class="muted">FastLane is a school prototype (BSCOE 3-1). All data is fictitious, and LTO records and payments are simulated.</p><p class="muted">Version ${APP_VERSION}</p></div></footer>`;
 
 /* ---- login and register ---- */
 function loginV() {
   return `<div class="authwrap"><div class="card"><h2>Log in</h2><label for="le">Email</label><input id="le" type="email" autocomplete="username"><label for="lp">Password</label><input id="lp" type="password" autocomplete="current-password"><button class="btn" onclick="login($('#le').value,$('#lp').value)">Log in</button><button class="btn line" onclick="authView='forgot';draw()">Forgot password?</button>
 <p class="muted demo">Demo accounts (password <b>demo1234</b>):<br>${['customer', 'uw', 'claims', 'claims2', 'csr', 'admin'].map((x) => `<button class="btn line sm" onclick="login('${x}@demo.ph','demo1234')">${x}</button>`).join('')}</p>
-<p class="muted">New here? <button class="link" onclick="authView='register';draw()">Create an account</button></p></div></div>`;
+<p class="muted">New here? <button class="link" onclick="authView='register';draw()">Create an account</button></p><p class="muted">Version ${APP_VERSION}</p></div></div>`;
 }
 
 function registerV() {
