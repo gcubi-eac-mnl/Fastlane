@@ -15,6 +15,7 @@ Web portal for Confidently Fast (motor vehicle insurance): quote, driver verific
 | `js/config.js` | Constants, claim stages, rejection reasons, menu per role | Add a role or menu tab |
 | `js/utils.js` | Formatting and small helpers | Rarely |
 | `js/state.js` | Who is logged in, current tab | Rarely |
+| `js/email-config.js` | EmailJS settings (empty = simulated email) | Turn on real reset emails |
 | `js/supabase-config.js` | Supabase URL and key (empty = data stays in this browser) | Turn on shared data |
 | `js/store.js` | **Data layer**: seed data, audit log, notifications, picks the backend | Data layer changes |
 | `js/store-local.js` | Backend 1: this browser only (default) | Rarely |
@@ -69,7 +70,13 @@ Not protected (prototype limits):
 ## Forgot password
 Log in screen, **Forgot password?**: enter the email, get a 6-digit code, choose a new password. The code is stored as a salted hash, expires after 10 minutes and allows 5 wrong tries.
 
-This prototype cannot send real email, so the code appears on screen as a **simulated email** (like the simulated email log in the system proposal). That means anyone who knows an account's email can reset its password. To use a real email service later, send the code from `requestReset()` in `js/views/password.js` and set `DEMO_SHOW_RESET_CODE` to `false` in `js/config.js`.
+By default the code appears on screen as a **simulated email** (anyone who knows an account's email could then reset its password). To send **real email** instead, connect EmailJS (free: 200 emails a month, no server needed):
+1. Create an account at emailjs.com. Under **Email Services**, add your Gmail (or other) account and note the **Service ID**.
+2. Under **Email Templates**, create a template. Subject: `Your {{app_name}} password reset code`. Body: `Use this code to reset your password: {{code}}. It expires in {{minutes}} minutes. If you did not ask for it, ignore this email.` Set the **To Email** field to `{{to_email}}`. Save and note the **Template ID**.
+3. Under **Account**, copy your **Public Key**.
+4. Paste the three values into `js/email-config.js` and commit.
+
+With email on: only accounts that exist are emailed, real addresses never see the code on screen, a second request within 60 seconds does not send another email, and the `@demo.ph` demo accounts keep using the on-screen simulated email. EmailJS lists IP rate limits and an optional reCAPTCHA for abuse control, but its allowed-domain list is not on the free plan, so anyone who finds your public key could use up your monthly quota.
 
 ## Known limits
 Rates and loadings are illustrative. Renewals, amendments, cancellation, the blacklist check and the post-claim survey are not built (the "Should" items in Section 4 of the system proposal). Internet is needed for the fonts, the QR code and the PDF library.
