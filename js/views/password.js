@@ -16,19 +16,57 @@ function forgotV() {
   <button class="btn gold" onclick="requestReset()">Send reset code</button><button class="btn line" onclick="authView='login';draw()">Back to log in</button></div>`;
 }
 
+/* The demo accounts (@demo.ph) are not real inboxes, so they always use the on-screen simulated email. */
+const isDemoAddress = (e) => e.endsWith('@demo.ph');
+const RESET_COOLDOWN_SECONDS = 60;
+
+/* Sends the code with EmailJS. The email template must have a "To Email" of {{to_email}} (see README). */
+async function sendResetEmail(to, code) {
+  const r = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      service_id: EMAILJS_SERVICE_ID,
+      template_id: EMAILJS_TEMPLATE_ID,
+      user_id: EMAILJS_PUBLIC_KEY,
+      template_params: { to_email: to, code, minutes: RESET_MINUTES, app_name: 'FastLane' },
+    }),
+  });
+  if (!r.ok) throw new Error(`Email service ${r.status}: ${(await r.text()).slice(0, 120)}`);
+}
+
 async function requestReset() {
   const e = $('#fe').value.trim().toLowerCase();
   if (!/^\S+@\S+\.\S+$/.test(e)) return toast('Enter a valid email address.');
   const code = String(crypto.getRandomValues(new Uint32Array(1))[0] % 1000000).padStart(6, '0'),
     h = await hashPw(code) /* hashed for every email, so unknown emails take the same time */,
-    u = db.users.find((x) => x.email === e);
-  if (u && u.active !== false) {
-    u.reset = { h, exp: new Date(Date.now() + RESET_MINUTES * 60000).toISOString(), tries: 0 };
+    u = db.users.find((x) => x.email === e),
+    real = EMAIL_ON && !isDemoAddress(e),
+    /* an email went out a moment ago: do not send another, and keep the earlier code valid */
+    cooling =
+      real && u?.reset?.at && Date.now() - Date.parse(u.reset.at) < RESET_COOLDOWN_SECONDS * 1000;
+  if (u && u.active !== false && !cooling) {
+    u.reset = {
+      h,
+      at: now(),
+      exp: new Date(Date.now() + RESET_MINUTES * 60000).toISOString(),
+      tries: 0,
+    };
+    if (real) {
+      try {
+        await sendResetEmail(e, code);
+      } catch (err) {
+        console.warn('FastLane email:', err.message);
+        delete u.reset; /* no email went out, so no code should be valid */
+        save();
+        return toast('We could not send the email right now. Please try again in a minute.');
+      }
+    }
     log('Password reset requested for ' + e);
     save();
   }
   resetEmail = e;
-  demoMail = { to: e, code };
+  demoMail = real ? null : { to: e, code }; /* real addresses never see the code on screen */
   authView = 'reset';
   draw();
 }
@@ -36,13 +74,13 @@ async function requestReset() {
 function resetV() {
   const mail =
     DEMO_SHOW_RESET_CODE && demoMail
-      ? `<div class="card" style="background:#fffbe9;border-color:var(--gold)"><div class="muted">Simulated email. This prototype cannot send real email, so the message is shown here.</div>
+      ? `<div class="card" style="background:#fffbe9;border-color:var(--gold)"><div class="muted">${EMAIL_ON ? 'Demo accounts are not real inboxes, so the message is shown here.' : 'Simulated email. This prototype cannot send real email, so the message is shown here.'}</div>
   <p><b>To:</b> ${esc(demoMail.to)}<br><b>Subject:</b> Your FastLane password reset code</p>
   <p>Use this code to reset your password:</p><div class="tot" style="letter-spacing:.15em">${demoMail.code}</div>
   <p class="muted">The code expires in ${RESET_MINUTES} minutes. If you did not ask for it, ignore this email.</p></div>`
       : '';
   return `<div class="card" style="max-width:460px;margin:1rem auto"><h2>Reset your password</h2>
-  <p>If an account exists for <b>${esc(resetEmail)}</b>, a code was sent to it.</p>${mail}
+  <p>If an account exists for <b>${esc(resetEmail)}</b>, a code was sent to it.${EMAIL_ON && !isDemoAddress(resetEmail) ? ' Check your inbox and spam folder. It can take a minute.' : ''}</p>${mail}
   <label for="fc">6-digit code</label><input id="fc" inputmode="numeric" maxlength="6" autocomplete="one-time-code">
   <label for="fp1">New password (8+ characters)</label><input id="fp1" type="password" autocomplete="new-password">
   <label for="fp2">Confirm new password</label><input id="fp2" type="password" autocomplete="new-password">

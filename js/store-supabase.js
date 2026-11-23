@@ -7,7 +7,7 @@
    rows changed by others and refreshes the screen. Uploaded documents go to the Storage bucket "documents".
    NOTE: this prototype uses the public (anon) key with open access rules, so use fictitious data only. */
 
-const POLL_MS = 2500;
+const POLL_MS = 4000; /* how often each open page asks the server for changes */
 /* which field identifies a record in each collection */
 const COLL = {
   users: 'email',
@@ -118,7 +118,8 @@ const cloudStore = {
   },
 
   async poll() {
-    if (this.polling || this.busy || this.dirty) return;
+    if (document.hidden || this.polling || this.busy || this.dirty)
+      return; /* background tabs stay quiet */
     this.polling = true;
     try {
       const rows = await this.fetchRows(this.lastSeen);
@@ -138,6 +139,10 @@ const cloudStore = {
   start() {
     clearInterval(this.iv);
     this.iv = setInterval(() => this.poll(), POLL_MS);
+    if (!this.vis) {
+      this.vis = true;
+      document.addEventListener('visibilitychange', () => !document.hidden && this.poll());
+    }
   },
 
   /* ---- writing ---- */
